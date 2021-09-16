@@ -2,6 +2,8 @@
 
 Arithmetic Expression implemented in TaPL chapter 4.
 
+I added some comments in Japanese.
+
 ## format
 
 ```bash
