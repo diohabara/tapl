@@ -9,10 +9,8 @@
 {
 open Support.Error
 
-(* 予約語 *)
 let reservedWords = [
   (* Keywords *)
-  (* 予約キーワード *)
   ("import", fun i -> Parser.IMPORT i);
   ("if", fun i -> Parser.IF i);
   ("then", fun i -> Parser.THEN i);
@@ -23,7 +21,6 @@ let reservedWords = [
   ("pred", fun i -> Parser.PRED i);
   ("iszero", fun i -> Parser.ISZERO i);
   
-  (* 予約記号 *)
   (* Symbols *)
   ("_", fun i -> Parser.USCORE i);
   ("'", fun i -> Parser.APOSTROPHE i);
@@ -57,7 +54,6 @@ let reservedWords = [
   ("|]", fun i -> Parser.BARRSQUARE i);
 
   (* Special compound symbols: *)
-  (* 上の記号が複数結合してできた記号 *)
   (":=", fun i -> Parser.COLONEQ i);
   ("->", fun i -> Parser.ARROW i);
   ("=>", fun i -> Parser.DARROW i);
@@ -65,7 +61,6 @@ let reservedWords = [
 ]
 
 (* Support functions *)
-(* 諸々の補助関数 *)
 type buildfun = info -> Parser.token
 let (symbolTable : (string,buildfun) Hashtbl.t) = Hashtbl.create 1024
 let _ =
@@ -129,7 +124,6 @@ let extractLineno yytext offset =
 
 
 (* The main body of the lexical analyzer *)
-(* 字句解析 *)
 rule main = parse
   [' ' '\009' '\012']+     { main lexbuf }
 
@@ -172,7 +166,6 @@ rule main = parse
 
 | _  { error (info lexbuf) "Illegal character" }
 
-(* コメント *)
 and comment = parse
   "/*"
     { depth := succ !depth; comment lexbuf }
@@ -185,7 +178,6 @@ and comment = parse
 | "\n"
     { newline lexbuf; comment lexbuf }
 
-(* getFile, getName, finishNameでファイル名を取得している *)
 and getFile = parse
   " "* "\"" { getName lexbuf }
 
@@ -195,7 +187,6 @@ and getName = parse
 and finishName = parse
   '"' [^ '\n']* { main lexbuf }
 
-(* 文字列 *)
 and string = parse
   '"'  { Parser.STRINGV {i = !startLex; v=getStr()} }
 | '\\' { addStr(escaped lexbuf); string lexbuf }
@@ -203,7 +194,6 @@ and string = parse
 | eof  { error (!startLex) "String not terminated" }
 | _    { addStr (Lexing.lexeme_char lexbuf 0); string lexbuf }
 
-(* 文字列のエスケープ文字 *)
 and escaped = parse
   'n'	 { '\n' }
 | 't'	 { '\t' }

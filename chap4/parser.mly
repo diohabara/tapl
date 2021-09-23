@@ -22,7 +22,6 @@ open Syntax
  */
 
 /* Keyword tokens */
-(* トークン *)
 %token <Support.Error.info> IMPORT
 %token <Support.Error.info> IF
 %token <Support.Error.info> THEN
@@ -34,7 +33,6 @@ open Syntax
 %token <Support.Error.info> ISZERO
 
 /* Identifier and constant value tokens */
-(* 識別子、定数に使う *)
 %token <string Support.Error.withinfo> UCID  /* uppercase-initial */
 %token <string Support.Error.withinfo> LCID  /* lowercase/symbolic-initial */
 %token <int Support.Error.withinfo> INTV
@@ -42,7 +40,6 @@ open Syntax
 %token <string Support.Error.withinfo> STRINGV
 
 /* Symbolic tokens */
-(* 記号に使う *)
 %token <Support.Error.info> APOSTROPHE
 %token <Support.Error.info> DQUOTE
 %token <Support.Error.info> ARROW
@@ -96,7 +93,6 @@ open Syntax
 
 /* The top level of a file is a sequence of commands, each terminated
    by a semicolon. */
-(* ここから開始 *)
 toplevel :
     EOF
       { [] }
@@ -106,20 +102,17 @@ toplevel :
           cmd::cmds }
 
 /* A top-level command */
-(* インポートもしくは Term を生成 *)
 Command :
     IMPORT STRINGV { (Import($2.v)) }
   | Term 
       { (let t = $1 in Eval(tmInfo t,t)) }
 
-(* ATerm もしくは AppTerm を生成 *)
 Term :
     AppTerm
       { $1 }
   | IF Term THEN Term ELSE Term
       { TmIf($1, $2, $4, $6) }
 
-(* ATerm を生成 *)
 AppTerm :
     ATerm
       { $1 }
@@ -131,7 +124,6 @@ AppTerm :
       { TmIsZero($1, $2) }
 
 /* Atomic terms are ones that never require extra parentheses */
-(* 終端 *)
 ATerm :
     LPAREN Term RPAREN  
       { $2 } 
