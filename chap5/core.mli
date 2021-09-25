@@ -6,5 +6,6 @@
 open Syntax
 open Support.Error
 
-val eval : context -> term -> term 
-val evalbinding : context -> binding -> binding 
+val eval : context -> term -> term
+
+val evalbinding : context -> binding -> binding
