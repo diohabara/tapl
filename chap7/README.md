@@ -1,4 +1,4 @@
-## Untyped Lambda Calculus
+# Untyped Lambda Calculus
 
 Untyped Lambda Calculus implemented in TaPL chapter 5.
 
