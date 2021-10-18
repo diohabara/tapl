@@ -1,6 +1,6 @@
 # Untyped Lambda Calculus
 
-Untyped Lambda Calculus implemented in TaPL chapter 5.
+Untyped Lambda Calculus implemented in TaPL chapter 7.
 
 ## format
 
